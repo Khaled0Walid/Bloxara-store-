@@ -6,10 +6,10 @@ const fs = require('fs');
 require('dotenv').config();
 
 const requireAdmin = require('./middleware/requireAdmin');
-const authRoutes     = require('./routes/auth');
-const ordersRoutes   = require('./routes/orders');
+const authRoutes = require('./routes/auth');
+const ordersRoutes = require('./routes/orders');
 const productsRoutes = require('./routes/products');
-const statsRoutes    = require('./routes/stats');
+const statsRoutes = require('./routes/stats');
 
 const app = express();
 const PORT = 5000;
@@ -38,13 +38,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api/stats', statsRoutes);
 
 // Protected admin routes
-app.use('/api/orders',   ordersRoutes);   // individual routes check auth as needed
+app.use('/api/orders', ordersRoutes);   // individual routes check auth as needed
 app.use('/api/products', productsRoutes); // same
 
 // Image upload endpoint (admin only)
 app.post('/api/upload', requireAdmin, upload.single('image'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    const url = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+    const url = `https://bloxara-store.onrender.com/uploads/${req.file.filename}`;
     res.json({ url });
 });
 

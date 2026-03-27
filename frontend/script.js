@@ -1,41 +1,43 @@
 // --- API CONNECTION (Frontend to Backend) ---
 // Fetch and render actual marketplace inventory to the homepage!
+const API_URL = 'https://bloxara-store.onrender.com';
+
 async function loadProducts() {
   const trendingSlider = document.getElementById('trending-slider');
   if (!trendingSlider) return; // Only run on index.html
 
   try {
-    const response = await fetch('http://localhost:5000/api/products');
+    const response = await fetch(`${API_URL}/api/products`);
     const products = await response.json();
-    
+
     trendingSlider.innerHTML = ''; // Clear default/spinners
-    
+
     if (products.length === 0) {
-        trendingSlider.innerHTML = '<p style="color:#a0a0b0; padding:2rem;">No products listed yet.</p>';
-        return;
+      trendingSlider.innerHTML = '<p style="color:#a0a0b0; padding:2rem;">No products listed yet.</p>';
+      return;
     }
 
     products.forEach((p, index) => {
-        // Calculate a slight stagger delay for the CSS entrance animation
-        const delay = (index % 5) * 0.1 + 's';
-        
-        // Use a generic logic to decide rarity tag purely for visual appeal based on price
-        let badge = 'Common';
-        let badgeColor = '#94a3b8'; // gray
-        let badgeDisplay = 'display: none;'; // hide by default if common
-        if (p.price > 100000) { badge = 'Mythical'; badgeColor = '#c084fc'; badgeDisplay = 'display: block;'; } // purple
-        else if (p.price > 50000) { badge = 'Legendary'; badgeColor = '#facc15'; badgeDisplay = 'display: block;'; } // yellow
-        else if (p.price > 10000) { badge = 'Epic'; badgeColor = '#fb7185'; badgeDisplay = 'display: block;'; } // pink
+      // Calculate a slight stagger delay for the CSS entrance animation
+      const delay = (index % 5) * 0.1 + 's';
 
-        // Calculate Sale Badge if old_price exists
-        let saleBadgeHTML = '';
-        if (p.old_price && p.old_price > p.price) {
-            const savings = Math.round(((p.old_price - p.price) / p.old_price) * 100);
-            saleBadgeHTML = `<div class="sale-badge">SALE -${savings}%</div>`;
-        }
+      // Use a generic logic to decide rarity tag purely for visual appeal based on price
+      let badge = 'Common';
+      let badgeColor = '#94a3b8'; // gray
+      let badgeDisplay = 'display: none;'; // hide by default if common
+      if (p.price > 100000) { badge = 'Mythical'; badgeColor = '#c084fc'; badgeDisplay = 'display: block;'; } // purple
+      else if (p.price > 50000) { badge = 'Legendary'; badgeColor = '#facc15'; badgeDisplay = 'display: block;'; } // yellow
+      else if (p.price > 10000) { badge = 'Epic'; badgeColor = '#fb7185'; badgeDisplay = 'display: block;'; } // pink
 
-        // Create the card
-        const cardHTML = `
+      // Calculate Sale Badge if old_price exists
+      let saleBadgeHTML = '';
+      if (p.old_price && p.old_price > p.price) {
+        const savings = Math.round(((p.old_price - p.price) / p.old_price) * 100);
+        saleBadgeHTML = `<div class="sale-badge">SALE -${savings}%</div>`;
+      }
+
+      // Create the card
+      const cardHTML = `
           <div class="item-card glass-panel" style="transition-delay: ${delay}" onclick="window.location.href='item.html?id=${p.id}'">
             ${saleBadgeHTML}
             <div class="item-badge" style="background: ${badgeColor}; color: #000; ${badgeDisplay}">${badge}</div>
@@ -55,7 +57,7 @@ async function loadProducts() {
             </div>
           </div>
         `;
-        trendingSlider.insertAdjacentHTML('beforeend', cardHTML);
+      trendingSlider.insertAdjacentHTML('beforeend', cardHTML);
     });
 
   } catch (error) {
@@ -70,32 +72,32 @@ async function loadSingleProduct() {
   if (!id) return;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/products/${id}`);
+    const res = await fetch(`${API_URL}/api/products/${id}`);
     if (!res.ok) throw new Error('Product not found');
     const p = await res.json();
 
     document.getElementById('product-id-display').innerText = `ID: #${p.id}`;
     document.getElementById('product-title-display').innerText = p.name;
     document.getElementById('product-description-display').innerText = p.description || 'No description available.';
-    document.getElementById('display-price').innerText = Number(p.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
-    
+    document.getElementById('display-price').innerText = Number(p.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
     // Handle Old Price display
     const priceContainer = document.querySelector('.product-price');
     if (p.old_price) {
-        const savings = Math.round(((p.old_price - p.price) / p.old_price) * 100);
-        // Check if it already exists to avoid duplication
-        if (!document.getElementById('display-old-price')) {
-            const oldPriceSpan = document.createElement('span');
-            oldPriceSpan.id = 'display-old-price';
-            oldPriceSpan.style.cssText = 'text-decoration: line-through; color: rgba(255,255,255,0.3); font-size: 1.5rem; margin-left: 1rem; font-weight: normal;';
-            oldPriceSpan.innerText = `$ ${Number(p.old_price).toLocaleString()} (-${savings}%)`;
-            priceContainer.appendChild(oldPriceSpan);
-        } else {
-            document.getElementById('display-old-price').innerText = `$ ${Number(p.old_price).toLocaleString()} (-${savings}%)`;
-        }
+      const savings = Math.round(((p.old_price - p.price) / p.old_price) * 100);
+      // Check if it already exists to avoid duplication
+      if (!document.getElementById('display-old-price')) {
+        const oldPriceSpan = document.createElement('span');
+        oldPriceSpan.id = 'display-old-price';
+        oldPriceSpan.style.cssText = 'text-decoration: line-through; color: rgba(255,255,255,0.3); font-size: 1.5rem; margin-left: 1rem; font-weight: normal;';
+        oldPriceSpan.innerText = `$ ${Number(p.old_price).toLocaleString()} (-${savings}%)`;
+        priceContainer.appendChild(oldPriceSpan);
+      } else {
+        document.getElementById('display-old-price').innerText = `$ ${Number(p.old_price).toLocaleString()} (-${savings}%)`;
+      }
     } else {
-        const existingOld = document.getElementById('display-old-price');
-        if (existingOld) existingOld.remove();
+      const existingOld = document.getElementById('display-old-price');
+      if (existingOld) existingOld.remove();
     }
     document.getElementById('product-image').src = p.image_url;
     document.getElementById('product-image').alt = p.name;
@@ -117,17 +119,17 @@ async function loadSingleProduct() {
     // Hook up the Buy Now button to pass the ID and QTY to checkout
     const checkoutBtn = document.getElementById('checkout-btn');
     const qtyInput = document.getElementById('item-qty');
-    
+
     if (checkoutBtn && qtyInput) {
-        checkoutBtn.addEventListener('click', () => {
-            const qty = qtyInput.value;
-            window.location.href = `checkout.html?id=${id}&qty=${qty}`;
-        });
+      checkoutBtn.addEventListener('click', () => {
+        const qty = qtyInput.value;
+        window.location.href = `checkout.html?id=${id}&qty=${qty}`;
+      });
     }
 
   } catch (err) {
     console.error("❌ Failed to fetch single product:", err);
-        document.getElementById('product-title-display').innerText = 'Product Not Found';
+    document.getElementById('product-title-display').innerText = 'Product Not Found';
   }
 }
 
@@ -135,32 +137,32 @@ async function loadCheckout() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   const qty = params.get('qty') || 1;
-  
+
   if (!id) {
-      document.getElementById('checkout-title').innerText = "No item selected.";
-      document.getElementById('checkout-badge').innerText = "Error";
-      return;
+    document.getElementById('checkout-title').innerText = "No item selected.";
+    document.getElementById('checkout-badge').innerText = "Error";
+    return;
   }
 
   try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`);
-      if (!res.ok) throw new Error('Product not found');
-      const p = await res.json();
+    const res = await fetch(`${API_URL}/api/products/${id}`);
+    if (!res.ok) throw new Error('Product not found');
+    const p = await res.json();
 
-      const price = Number(p.price);
-      const total = price * Number(qty);
+    const price = Number(p.price);
+    const total = price * Number(qty);
 
-      document.getElementById('checkout-img').src = p.image_url;
-      document.getElementById('checkout-title').innerText = p.name;
-      document.getElementById('checkout-badge').innerText = `ID: #${p.id}`;
-      document.getElementById('checkout-qty').innerText = qty;
-      
-      document.getElementById('checkout-base-price').innerText = price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
-      document.getElementById('checkout-total').innerText = total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2});
+    document.getElementById('checkout-img').src = p.image_url;
+    document.getElementById('checkout-title').innerText = p.name;
+    document.getElementById('checkout-badge').innerText = `ID: #${p.id}`;
+    document.getElementById('checkout-qty').innerText = qty;
+
+    document.getElementById('checkout-base-price').innerText = price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('checkout-total').innerText = total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   } catch (err) {
-      console.error("❌ Failed to load checkout data:", err);
-      document.getElementById('checkout-title').innerText = "Error loading cart.";
+    console.error("❌ Failed to load checkout data:", err);
+    document.getElementById('checkout-title').innerText = "Error loading cart.";
   }
 }
 
@@ -168,10 +170,10 @@ async function loadCheckout() {
 document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   if (window.location.pathname.includes('item.html')) {
-      loadSingleProduct();
+    loadSingleProduct();
   }
   if (window.location.pathname.includes('checkout.html')) {
-      loadCheckout();
+    loadCheckout();
   }
 
   // Mobile Menu Toggle
@@ -220,13 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      
+
       const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
       const rotateY = ((x - centerX) / centerX) * 10;
-      
+
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
     });
 
@@ -238,17 +240,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Smooth Scrolling for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-      if(this.getAttribute('href') !== '#') {
+      if (this.getAttribute('href') !== '#') {
         e.preventDefault();
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
-        if(targetElement) {
+        if (targetElement) {
           targetElement.scrollIntoView({
             behavior: 'smooth'
           });
           // Close mobile menu if open
           if (navLinks.classList.contains('active')) {
-             navLinks.classList.remove('active');
+            navLinks.classList.remove('active');
           }
         }
       }
@@ -262,11 +264,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (slider && scrollLeftBtn && scrollRightBtn) {
     const scrollAmount = 350; // Approximated card width + gap
-    
+
     scrollLeftBtn.addEventListener('click', () => {
       slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     });
-    
+
     scrollRightBtn.addEventListener('click', () => {
       slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     });
@@ -283,25 +285,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let basePrice = 0;
     const priceEl = document.getElementById('display-price');
     if (priceEl) {
-        basePrice = parseFloat(priceEl.innerText.replace(/,/g, ''));
+      basePrice = parseFloat(priceEl.innerText.replace(/,/g, ''));
     }
-    
+
     const updatePrice = () => {
       let qty = parseInt(qtyInput.value);
       if (isNaN(qty) || qty < 1) {
         qty = 1;
         qtyInput.value = 1;
       }
-      
+
       const maxQty = parseInt(qtyInput.getAttribute('max')) || 10;
       if (qty > maxQty) {
         qty = maxQty;
         qtyInput.value = maxQty;
       }
-      
+
       const totalPrice = basePrice * qty;
       priceDisplay.textContent = totalPrice.toLocaleString();
-      
+
       // Update button states
       decreaseBtn.disabled = qty <= 1;
       increaseBtn.disabled = qty >= maxQty;
@@ -325,39 +327,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     qtyInput.addEventListener('change', updatePrice);
-    
+
     // Initialize states
     updatePrice();
   }
 
   // --- Auth State Management ---
   function checkAuthStatus() {
-      const token = localStorage.getItem('bloxara_token');
-      const userStr = localStorage.getItem('bloxara_user');
-      const navActions = document.querySelector('.nav-actions');
+    const token = localStorage.getItem('bloxara_token');
+    const userStr = localStorage.getItem('bloxara_user');
+    const navActions = document.querySelector('.nav-actions');
 
-      if (token && userStr && navActions) {
-          try {
-              const user = JSON.parse(userStr);
-              // Replace Login/Signup with Profile Button
-              const redirectUrl = user.role === 'admin' ? 'admin.html' : 'profile.html';
-              navActions.innerHTML = `
+    if (token && userStr && navActions) {
+      try {
+        const user = JSON.parse(userStr);
+        // Replace Login/Signup with Profile Button
+        const redirectUrl = user.role === 'admin' ? 'admin.html' : 'profile.html';
+        navActions.innerHTML = `
                   <a href="${redirectUrl}" class="btn btn-secondary profile-btn" style="padding: 0.4rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.4rem;">
                       <span style="font-weight: 600;">${user.username}</span>
                   </a>
               `;
-          } catch (e) {
-              console.error("Error parsing user data");
-              localStorage.removeItem('bloxara_token');
-              localStorage.removeItem('bloxara_user');
-          }
-      } else if (navActions && !window.location.pathname.includes('login.html') && !window.location.pathname.includes('signup.html') && !window.location.pathname.includes('profile.html')) {
-          // Show default Login/Signup if not on auth pages or profile
-          navActions.innerHTML = `
+      } catch (e) {
+        console.error("Error parsing user data");
+        localStorage.removeItem('bloxara_token');
+        localStorage.removeItem('bloxara_user');
+      }
+    } else if (navActions && !window.location.pathname.includes('login.html') && !window.location.pathname.includes('signup.html') && !window.location.pathname.includes('profile.html')) {
+      // Show default Login/Signup if not on auth pages or profile
+      navActions.innerHTML = `
               <a href="login.html" class="btn btn-secondary">Login</a>
               <a href="signup.html" class="btn btn-primary">Sign Up</a>
           `;
-      }
+    }
   }
 
   // Run on load
@@ -367,65 +369,65 @@ document.addEventListener('DOMContentLoaded', () => {
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const identifier = document.getElementById('identifier').value;
       const password = document.getElementById('password').value;
       const btn = loginForm.querySelector('.auth-submit');
-      
+
       const msgDiv = document.getElementById('login-message');
       msgDiv.style.display = 'none';
 
       const originalText = btn.innerHTML;
       btn.innerHTML = 'Signing in...';
       btn.disabled = true;
-      
-      try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ identifier, password })
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-            // Save token and user info globally!
-            localStorage.setItem('bloxara_token', data.token);
-            localStorage.setItem('bloxara_user', JSON.stringify(data.user));
-            
-            msgDiv.textContent = 'Login successful! Redirecting...';
-            msgDiv.style.display = 'block';
-            msgDiv.style.backgroundColor = 'rgba(0, 177, 106, 0.1)';
-            msgDiv.style.color = '#00B16A';
-            msgDiv.style.border = '1px solid #00B16A';
 
-            btn.innerHTML = 'Success!';
-            btn.style.background = '#00B16A';
-            setTimeout(() => { 
-                if (data.user.role === 'admin') {
-                    window.location.href = 'admin.html';
-                } else {
-                    window.location.href = 'index.html'; 
-                }
-            }, 1000);
+      try {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Save token and user info globally!
+          localStorage.setItem('bloxara_token', data.token);
+          localStorage.setItem('bloxara_user', JSON.stringify(data.user));
+
+          msgDiv.textContent = 'Login successful! Redirecting...';
+          msgDiv.style.display = 'block';
+          msgDiv.style.backgroundColor = 'rgba(0, 177, 106, 0.1)';
+          msgDiv.style.color = '#00B16A';
+          msgDiv.style.border = '1px solid #00B16A';
+
+          btn.innerHTML = 'Success!';
+          btn.style.background = '#00B16A';
+          setTimeout(() => {
+            if (data.user.role === 'admin') {
+              window.location.href = 'admin.html';
+            } else {
+              window.location.href = 'index.html';
+            }
+          }, 1000);
         } else {
-            msgDiv.textContent = "Login Failed: " + (data.error || "Please check credentials.");
-            msgDiv.style.display = 'block';
-            msgDiv.style.backgroundColor = 'rgba(255, 77, 77, 0.1)';
-            msgDiv.style.color = '#ff4d4d';
-            msgDiv.style.border = '1px solid #ff4d4d';
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-      } catch (err) {
-          console.error(err);
-          msgDiv.textContent = "Could not connect to the server. Is it running?";
+          msgDiv.textContent = "Login Failed: " + (data.error || "Please check credentials.");
           msgDiv.style.display = 'block';
           msgDiv.style.backgroundColor = 'rgba(255, 77, 77, 0.1)';
           msgDiv.style.color = '#ff4d4d';
           msgDiv.style.border = '1px solid #ff4d4d';
           btn.innerHTML = originalText;
           btn.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+        msgDiv.textContent = "Could not connect to the server. Is it running?";
+        msgDiv.style.display = 'block';
+        msgDiv.style.backgroundColor = 'rgba(255, 77, 77, 0.1)';
+        msgDiv.style.color = '#ff4d4d';
+        msgDiv.style.border = '1px solid #ff4d4d';
+        btn.innerHTML = originalText;
+        btn.disabled = false;
       }
     });
   }
@@ -434,15 +436,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (signupForm) {
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const username = document.getElementById('username').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirm-password').value;
-      
+
       const msgDiv = document.getElementById('signup-message');
       msgDiv.style.display = 'none';
-      
+
       if (password !== confirmPassword) {
         msgDiv.textContent = "Passwords do not match!";
         msgDiv.style.display = 'block';
@@ -451,48 +453,48 @@ document.addEventListener('DOMContentLoaded', () => {
         msgDiv.style.border = '1px solid #ff4d4d';
         return;
       }
-      
+
       const btn = signupForm.querySelector('.auth-submit');
       const originalText = btn.innerHTML;
       btn.innerHTML = 'Creating Account...';
       btn.disabled = true;
-      
+
       try {
-        const response = await fetch('http://localhost:5000/api/auth/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, email, password })
+        const response = await fetch(`${API_URL}/api/auth/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password })
         });
-        
+
         const data = await response.json();
-        
+
         if (response.ok) {
-            msgDiv.textContent = 'Account Created! Redirecting to login...';
-            msgDiv.style.display = 'block';
-            msgDiv.style.backgroundColor = 'rgba(0, 177, 106, 0.1)';
-            msgDiv.style.color = '#00B16A';
-            msgDiv.style.border = '1px solid #00B16A';
-            btn.innerHTML = 'Success!';
-            btn.style.background = '#00B16A';
-            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+          msgDiv.textContent = 'Account Created! Redirecting to login...';
+          msgDiv.style.display = 'block';
+          msgDiv.style.backgroundColor = 'rgba(0, 177, 106, 0.1)';
+          msgDiv.style.color = '#00B16A';
+          msgDiv.style.border = '1px solid #00B16A';
+          btn.innerHTML = 'Success!';
+          btn.style.background = '#00B16A';
+          setTimeout(() => { window.location.href = 'login.html'; }, 1500);
         } else {
-            msgDiv.textContent = "Signup Failed: " + (data.error || "Please try again.");
-            msgDiv.style.display = 'block';
-            msgDiv.style.backgroundColor = 'rgba(255, 77, 77, 0.1)';
-            msgDiv.style.color = '#ff4d4d';
-            msgDiv.style.border = '1px solid #ff4d4d';
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-      } catch (err) {
-          console.error(err);
-          msgDiv.textContent = "Could not connect to the server.";
+          msgDiv.textContent = "Signup Failed: " + (data.error || "Please try again.");
           msgDiv.style.display = 'block';
           msgDiv.style.backgroundColor = 'rgba(255, 77, 77, 0.1)';
           msgDiv.style.color = '#ff4d4d';
           msgDiv.style.border = '1px solid #ff4d4d';
           btn.innerHTML = originalText;
           btn.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+        msgDiv.textContent = "Could not connect to the server.";
+        msgDiv.style.display = 'block';
+        msgDiv.style.backgroundColor = 'rgba(255, 77, 77, 0.1)';
+        msgDiv.style.color = '#ff4d4d';
+        msgDiv.style.border = '1px solid #ff4d4d';
+        btn.innerHTML = originalText;
+        btn.disabled = false;
       }
     });
   }
@@ -500,12 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Logout Logic ---
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) {
-      logoutBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          localStorage.removeItem('bloxara_token');
-          localStorage.removeItem('bloxara_user');
-          window.location.href = 'index.html';
-      });
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('bloxara_token');
+      localStorage.removeItem('bloxara_user');
+      window.location.href = 'index.html';
+    });
   }
 });
 
