@@ -1,38 +1,11 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const { Pool } = require('pg');
+const router = express.Router();
+const pool = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(cors());
-app.use(express.json()); // Parse JSON bodies
-app.use(express.static('.')); // Serve static files from root for easy local viewing
-
-// PostgreSQL Connection Pool
-const pool = new Pool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
-});
-
-// Test DB Connection
-pool.connect()
-    .then(() => console.log('✅ Connected to PostgreSQL database'))
-    .catch(err => console.error('❌ PostgreSQL connection error', err.stack));
-
-// ==========================================
-// AUTHENTICATION API ROUTES
-// ==========================================
-
 // 1. SIGNUP ENDPOINT
-app.post('/api/auth/signup', async (req, res) => {
+router.post('/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
@@ -66,7 +39,7 @@ app.post('/api/auth/signup', async (req, res) => {
 });
 
 // 2. LOGIN ENDPOINT
-app.post('/api/auth/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { identifier, password } = req.body;
 
@@ -108,8 +81,4 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`🚀 Bloxara Backend running on http://localhost:${PORT}`);
-});
-
+module.exports = router;

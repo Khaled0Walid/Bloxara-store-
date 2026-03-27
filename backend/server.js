@@ -6,6 +6,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 const requireAdmin = require('./middleware/requireAdmin');
+const authRoutes     = require('./routes/auth');
 const ordersRoutes   = require('./routes/orders');
 const productsRoutes = require('./routes/products');
 const statsRoutes    = require('./routes/stats');
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use('/uploads', express.static(uploadsDir));
 
 // Public routes (no auth needed for storefront reads)
+app.use('/api/auth', authRoutes);
 app.use('/api/stats', statsRoutes);
 
 // Protected admin routes

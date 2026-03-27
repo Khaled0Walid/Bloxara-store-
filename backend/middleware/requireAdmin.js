@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const pool = require('./db');
+const pool = require('../db');
 
 /**
  * Middleware: verifies JWT and checks the user has admin role.
