@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Bloxara - The ultimate gaming marketplace for Roblox items. Trade, buy, and sell limiteds securely.">
+  <meta property="og:title" content="Bloxara | Roblox Gaming Marketplace">
+  <meta property="og:description" content="The ultimate gaming marketplace for Roblox items.">
+  <meta property="og:type" content="website">
+  <title>Bloxara | Roblox Gaming Marketplace</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Bloxara",
+    "url": "https://bloxara.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://bloxara.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">
+        <picture>
+          <img src="logo/logo.png" style="height: 50px; width: auto;">
+        </picture>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#marketplace">Marketplace</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#community">Community</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <a href="login.html" class="btn btn-secondary">Login</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <img src="assets/hero_bg_1773446149544.png" alt="Gaming Background" class="hero-bg" loading="lazy">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content animate-on-scroll">
+        <div class="hero-badge">New Launch 🚀</div>
+        <h1 class="hero-title">Level Up Your <span class="text-gradient">Roblox Items</span></h1>
+        <p class="hero-desc">Discover the ultimate marketplace to buy, sell, and trade rare gaming assets with zero fees
+          and instant delivery. Join the fastest growing digital economy.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary">Explore Market</button>
+          <button class="btn btn-secondary">Start Trading</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h4>2M+</h4>
+            <p>Active Users</p>
+          </div>
+          <div class="stat-item">
+            <h4>500K</h4>
+            <p>Rare Items</p>
+          </div>
+          <div class="stat-item">
+            <h4>100%</h4>
+            <p>Secure Trades</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketplace Section -->
+  <section id="marketplace" class="section">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2 class="section-title">Trending Drops</h2>
+        <div class="section-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+          <button class="scroll-btn" id="scroll-left" aria-label="Scroll left">←</button>
+          <button class="scroll-btn" id="scroll-right" aria-label="Scroll right">→</button>
+          <a href="#" class="view-all" style="margin-left: 1rem;">View Full Market →</a>
+        </div>
+      </div>
+
+      <div class="items-slider-wrapper">
+        <div class="items-slider animate-on-scroll" id="trending-slider">
+          <!-- Dynamic Items will be injected here by script.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section id="categories" class="section" style="background: rgba(11, 12, 16, 0.5);">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2 class="section-title">Browse Categories</h2>
+      </div>
+      <div class="categories-grid animate-on-scroll">
+        <div class="category-card glass-panel">
+          <div class="category-icon">⚔️</div>
+          <h3>Weapons</h3>
+          <p>Swords, Blasters & Gear</p>
+        </div>
+        <div class="category-card glass-panel">
+          <div class="category-icon">👑</div>
+          <h3>Hats</h3>
+          <p>Crowns, Domino, Valkyrie</p>
+        </div>
+        <div class="category-card glass-panel">
+          <div class="category-icon">👕</div>
+          <h3>Clothing</h3>
+          <p>Shirts, Pants & Bundles</p>
+        </div>
+        <div class="category-card glass-panel">
+          <div class="category-icon">🎭</div>
+          <h3>Faces</h3>
+          <p>Limited Expressions</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="logo">
+            <picture><img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara" style="height: 40px; width: auto;"></picture>
+          </div>
+          <p style="margin-top: 1.5rem;">The premium destination for Roblox digital collectors. Secure, fast, and driven
+            by the community.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon">X</a>
+            <a href="#" class="social-icon">D</a>
+            <a href="#" class="social-icon">IG</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <div class="footer-links">
+            <a href="#">All Items</a>
+            <a href="#">Limiteds</a>
+            <a href="#">New Releases</a>
+            <a href="#">Trending</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <div class="footer-links">
+            <a href="#">Help Center</a>
+            <a href="#">Safety Center</a>
+            <a href="#">Trade Rules</a>
+            <a href="#">Contact Us</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        © 2026 Bloxara. All rights reserved. Not affiliated with Roblox Corporation.
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
+

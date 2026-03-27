@@ -1,0 +1,5 @@
+For future reference: Every time you restart your computer or close the terminals, you'll need to run these two commands again:
+
+
+node server.js    in the backend/ folder
+npm start         in the bloxara/ folder

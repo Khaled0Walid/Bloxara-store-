@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Bloxara</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+
+  <!-- Minimal Navbar for Auth Pages -->
+  <nav class="navbar auth-navbar">
+    <div class="container nav-container" style="justify-content: center;">
+      <a href="index.html" class="logo" style="text-decoration: none;">
+        <picture><img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara" style="height: 50px; width: auto;"></picture>
+      </a>
+    </div>
+  </nav>
+
+  <div class="auth-container">
+    <div class="auth-card glass-panel animate-on-scroll visible">
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-subtitle">Login to access your Bloxara account.</p>
+      
+      <form class="auth-form" id="login-form">
+        <div id="login-message" style="margin-bottom: 1rem; text-align: center; border-radius: 4px; padding: 0.5rem; display: none;"></div>
+
+        <div class="form-group">
+          <label for="identifier">Username or Email</label>
+          <input type="text" id="identifier" class="form-input" placeholder="Enter your username or email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password" style="display: flex; justify-content: space-between;">
+            Password
+            <a href="#" class="forgot-link">Forgot?</a>
+          </label>
+          <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+        </div>
+        
+        <div class="form-checkbox">
+          <input type="checkbox" id="remember">
+          <label for="remember">Remember me</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary auth-submit">Sign In</button>
+      </form>
+      
+      <div class="auth-footer">
+        Don't have an account? <a href="signup.html">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+

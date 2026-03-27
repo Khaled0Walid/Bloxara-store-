@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | Bloxara</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+
+  <!-- Minimal Navbar for Auth Pages -->
+  <nav class="navbar auth-navbar">
+    <div class="container nav-container" style="justify-content: center;">
+      <a href="index.html" class="logo" style="text-decoration: none;">
+        <picture><img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara" style="height: 50px; width: auto;"></picture>
+      </a>
+    </div>
+  </nav>
+
+  <div class="auth-container">
+    <div class="auth-card glass-panel animate-on-scroll visible">
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-subtitle">Join the ultimate Roblox marketplace.</p>
+      
+      <form class="auth-form" id="signup-form">
+        <div id="signup-message" style="margin-bottom: 1rem; text-align: center; border-radius: 4px; padding: 0.5rem; display: none;"></div>
+
+        <div class="form-group">
+          <label for="username">Roblox Username</label>
+          <input type="text" id="username" class="form-input" placeholder="Your exact Roblox username" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" class="form-input" placeholder="Enter a secure email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-input" placeholder="Create a strong password" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" class="form-input" placeholder="Repeat your password" required>
+        </div>
+        
+        <div class="form-checkbox" style="margin-bottom: 1.5rem;">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">I agree to the <a href="#">Terms of Service</a> & <a href="#">Privacy Policy</a></label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary auth-submit">Create Account</button>
+      </form>
+      
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+

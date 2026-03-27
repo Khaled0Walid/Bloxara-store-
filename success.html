@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful | Bloxara</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .success-container {
+        max-width: 600px;
+        margin: 4rem auto;
+        text-align: center;
+        background: rgba(11, 12, 16, 0.8);
+        border: 1px solid rgba(69, 243, 255, 0.2);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        box-shadow: 0 0 50px rgba(69, 243, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .success-icon {
+        font-size: 5rem;
+        color: #4ade80;
+        margin-bottom: 1rem;
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    
+    @keyframes popIn {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .order-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .discord-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: #5865F2; /* Discord Blurple */
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+    }
+
+    .discord-btn:hover {
+        background: #4752C4;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(88, 101, 242, 0.6);
+    }
+  </style>
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh; padding-top: 80px;">
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container nav-container">
+      <div class="logo">
+        <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; color: inherit;">
+          <picture><img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara"></picture>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Back to Marketplace</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Success Content -->
+  <main class="container" style="flex: 1;">
+    <div class="success-container animate-on-scroll">
+        <div class="success-icon">✨✅</div>
+        <h1 style="font-family: var(--font-heading); margin-bottom: 0.5rem;">Payment Successful!</h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6;">
+            Thank you for your purchase. Your payment has been securely processed.
+        </p>
+
+        <div class="order-box">
+            <span style="display: block; color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Your Order Number</span>
+            <span id="order-number-display" style="font-size: 2rem; font-weight: 800; color: var(--accent-cyan); letter-spacing: 2px;">BLX-.....</span>
+        </div>
+
+        <h3 style="margin-bottom: 1rem;">Next Step: Claim Your Item</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.5;">
+            To receive your in-game item, please join our Discord server, open a claim ticket, and provide your Order Number to our delivery team.
+        </p>
+
+        <a href="https://discord.gg/your-invite-link-here" target="_blank" class="discord-btn">
+            <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a69f118df70ad7828d4_icon_clyde_blurple_RGB.svg" alt="Discord Logo" style="height: 24px; filter: brightness(0) invert(1);">
+            Join Discord to Claim Item
+        </a>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+      // Extract order number from URL and display it
+      document.addEventListener('DOMContentLoaded', () => {
+          const params = new URLSearchParams(window.location.search);
+          const orderNum = params.get('order');
+          if (orderNum) {
+              document.getElementById('order-number-display').innerText = orderNum;
+          } else {
+              document.getElementById('order-number-display').innerText = 'BLX-' + Math.floor(Math.random() * 1000000);
+          }
+      });
+  </script>
+</body>
+</html>

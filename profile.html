@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard | Bloxara</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="padding-top: 80px; background: radial-gradient(circle at 50% 10%, rgba(69, 162, 158, 0.15), var(--primary-bg) 60%);">
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled">
+    <div class="container nav-container">
+      <div class="logo">
+        <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; color: inherit;">
+          <picture><img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara" style="height: 50px; width: auto;"></picture>
+        </a>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#marketplace">Marketplace</a></li>
+        <li><a href="index.html#categories">Categories</a></li>
+      </ul>
+      <div class="nav-actions">
+        <!-- Logged in state simulation -->
+        <div class="profile-dropdown">
+            <button class="btn btn-secondary profile-btn" style="padding: 0.5rem 1rem; border-radius: 20px;">
+                <img src="https://tr.rbxcdn.com/38c6edcb50633730ff4cf39ac8859840/150/150/AvatarHeadshot/Png" alt="Avatar" class="profile-avatar-small">
+                <span>Player99</span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Layout -->
+  <section class="section profile-section" style="padding-top: 2rem;">
+    <div class="container profile-container">
+        
+      <!-- Sidebar -->
+      <aside class="profile-sidebar glass-panel">
+        <div class="profile-header">
+            <div class="profile-avatar-wrapper">
+                <img src="https://tr.rbxcdn.com/38c6edcb50633730ff4cf39ac8859840/150/150/AvatarHeadshot/Png" alt="Avatar" class="profile-avatar-large">
+                <div class="status-indicator online"></div>
+            </div>
+            <h2 class="profile-username">Player99</h2>
+            <div class="profile-balances">
+                <div class="balance-pill">
+                    <span class="robux-icon">$</span> 1,250
+                </div>
+            </div>
+        </div>
+
+    <nav class="profile-nav">
+            <a href="#" class="profile-nav-item active" data-tab="overview">
+                <span class="nav-icon">📊</span> Overview
+            </a>
+            <a href="#" class="profile-nav-item" data-tab="orders">
+                <span class="nav-icon">🛍️</span> Order History
+            </a>
+            <a href="#" class="profile-nav-item" data-tab="settings">
+                <span class="nav-icon">⚙️</span> Settings
+            </a>
+        </nav>
+        
+        <div class="profile-sidebar-footer">
+            <a href="#" id="logout-btn" class="logout-btn">
+                <span class="nav-icon">🚪</span> Sign Out
+            </a>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="profile-content">
+        <!-- OVERVIEW TAB -->
+        <div id="tab-overview" class="profile-tab active">
+          <div class="content-header animate-on-scroll">
+              <h1 class="content-title">Dashboard Overview</h1>
+              <p class="content-subtitle">Welcome back, here's what's happening with your account.</p>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="dashboard-stats-grid animate-on-scroll" style="transition-delay: 0.1s;">
+              <div class="dashboard-stat-card glass-panel">
+                  <div class="stat-icon-wrapper" style="background: rgba(102, 252, 241, 0.1); color: var(--accent-cyan);">🛒</div>
+                  <div class="stat-info">
+                      <p class="stat-label">Total Orders</p>
+                      <h3 class="stat-value" id="stat-order-count">0</h3>
+                  </div>
+              </div>
+              <div class="dashboard-stat-card glass-panel">
+                  <div class="stat-icon-wrapper" style="background: rgba(69, 162, 158, 0.1); color: var(--accent-teal);">💎</div>
+                  <div class="stat-info">
+                      <p class="stat-label">Value Spent</p>
+                      <h3 class="stat-value" id="stat-total-spent">$0</h3>
+                  </div>
+              </div>
+              <div class="dashboard-stat-card glass-panel">
+                  <div class="stat-icon-wrapper" style="background: rgba(255, 215, 0, 0.1); color: gold;">⭐</div>
+                  <div class="stat-info">
+                      <p class="stat-label">Trust Score</p>
+                      <h3 class="stat-value">100%</h3>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Recent Orders -->
+          <div class="dashboard-grid animate-on-scroll" style="transition-delay: 0.2s;">
+              <div class="dashboard-column" style="grid-column: 1/-1;">
+                  <h3 class="column-title">Recent Activity</h3>
+                  <div class="activity-timeline glass-panel" id="recent-activity-list">
+                      <p style="color:#888; text-align:center; padding: 1rem;">Loading activity...</p>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <!-- ORDER HISTORY TAB -->
+        <div id="tab-orders" class="profile-tab" style="display:none;">
+          <div class="content-header animate-on-scroll">
+              <h1 class="content-title">Order History</h1>
+              <p class="content-subtitle">All your past purchases, tracked and organized.</p>
+          </div>
+          <div id="orders-list" class="animate-on-scroll" style="display: flex; flex-direction: column; gap: 1rem; transition-delay: 0.1s;">
+              <p style="color:#888; text-align:center;">Loading your orders...</p>
+          </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="tab-settings" class="profile-tab" style="display:none;">
+          <div class="content-header animate-on-scroll">
+              <h1 class="content-title">Account Settings</h1>
+              <p class="content-subtitle">Manage your account preferences.</p>
+          </div>
+          <div class="glass-panel animate-on-scroll" style="padding: 2rem; border-radius: 16px; transition-delay: 0.1s;">
+              <p style="color: #94a3b8;">Settings panel coming soon.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="copyright">© 2026 Bloxara. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ADMIN_API = 'http://localhost:5000/api';
+
+        // Tab switching
+        const navItems = document.querySelectorAll('.profile-nav-item');
+        const tabs = document.querySelectorAll('.profile-tab');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = item.getAttribute('data-tab');
+                navItems.forEach(n => n.classList.remove('active'));
+                tabs.forEach(t => t.style.display = 'none');
+                item.classList.add('active');
+                document.getElementById(`tab-${target}`).style.display = 'block';
+                if (target === 'orders') loadOrders();
+            });
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('bloxara_token');
+            localStorage.removeItem('bloxara_user');
+            window.location.href = 'index.html';
+        });
+
+        // Load user data
+        let userData = null;
+        try { userData = JSON.parse(localStorage.getItem('bloxara_user')); } catch(e) {}
+        if (userData?.username) {
+            document.querySelector('.profile-username').textContent = userData.username;
+        }
+
+        // Load orders for this user
+        async function loadOrders() {
+            if (!userData?.id) {
+                document.getElementById('orders-list').innerHTML = `<p style="color:#888;text-align:center;">Please <a href="login.html" style="color:var(--accent-cyan)">log in</a> to view your orders.</p>`;
+                return;
+            }
+            try {
+                const res = await fetch(`${ADMIN_API}/orders/user/${userData.id}`);
+                const orders = await res.json();
+
+                // Update stats
+                document.getElementById('stat-order-count').textContent = orders.length;
+                const totalSpent = orders.reduce((sum, o) => sum + parseFloat(o.price || 0), 0);
+                document.getElementById('stat-total-spent').textContent = `$${totalSpent.toFixed(2)}`;
+
+                // Render order history list
+                const list = document.getElementById('orders-list');
+                if (orders.length === 0) {
+                    list.innerHTML = `<div class="glass-panel" style="padding:2rem;text-align:center;color:#888;">You haven't made any orders yet. <a href="index.html" style="color:var(--accent-cyan)">Browse the marketplace!</a></div>`;
+                } else {
+                    list.innerHTML = orders.map(o => {
+                        const date = new Date(o.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+                        const statusColor = o.status === 'Completed' || o.status === 'Fulfilled' ? '#4ade80' : o.status === 'Pending' ? '#facc15' : 'var(--accent-cyan)';
+                        return `
+                        <div class="glass-panel" style="display:flex;gap:1.5rem;align-items:center;padding:1.25rem 1.5rem;border-radius:14px;">
+                            <img src="${o.item_image || 'https://via.placeholder.com/60'}" alt="${o.item_name}" style="width:60px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0;">
+                            <div style="flex:1;min-width:0;">
+                                <h4 style="margin:0 0 0.25rem 0;color:#fff;">${o.item_name || 'Item'}</h4>
+                                <span style="font-size:0.8rem;color:#888;">${o.order_ref || `#${o.id}`} • ${date} • Qty: ${o.quantity || 1}</span>
+                            </div>
+                            <div style="text-align:right;flex-shrink:0;">
+                                <div style="font-weight:700;color:#4ade80;font-size:1.1rem;">$${parseFloat(o.price).toFixed(2)}</div>
+                                <span style="font-size:0.8rem;color:${statusColor};">${o.status}</span>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+
+                // Also update Recent Activity
+                const activityList = document.getElementById('recent-activity-list');
+                if (orders.length === 0) {
+                    activityList.innerHTML = `<p style="color:#888;text-align:center;padding:1rem;">No activity yet.</p>`;
+                } else {
+                    activityList.innerHTML = orders.slice(0, 3).map(o => {
+                        const date = new Date(o.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+                        return `
+                        <div class="activity-item">
+                            <div class="activity-dot purchase"></div>
+                            <div class="activity-content">
+                                <h4 class="activity-title">Purchased <span class="text-gradient">${o.item_name || 'an item'}</span></h4>
+                                <p class="activity-time">${date} • <strong>$${parseFloat(o.price).toFixed(2)}</strong> • ${o.order_ref || `#${o.id}`}</p>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            } catch(err) {
+                console.error('Error loading orders:', err);
+                document.getElementById('orders-list').innerHTML = `<p style="color:#ef4444;text-align:center;">Could not load orders. Make sure the server is running.</p>`;
+            }
+        }
+
+        // Load on overview by default
+        loadOrders();
+    });
+  </script>
+</body>
+</html>
+
+
+
+
