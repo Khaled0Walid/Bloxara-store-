@@ -2,20 +2,19 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-const path = require('path');
 
-// Configure Multer for local storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../uploads/')); // Save to the backend/uploads folder
+// Cloudinary storage config
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'bloxara',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
     },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 // GET /api/products
 router.get('/', async (req, res) => {
@@ -43,21 +42,17 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST /api/products (Create with Image Upload)
+// POST /api/products (Create with Cloudinary Image Upload)
 router.post('/', upload.single('image'), async (req, res) => {
     try {
         const { name, description, price, old_price, stock } = req.body;
-        
+
         if (!name || !price) {
             return res.status(400).json({ error: 'Name and price are required' });
         }
 
-        let image_url = '';
-        if (req.file) {
-            // Build the URL to the static file.
-            // Example result: http://localhost:5000/uploads/162384732-4938.jpg
-            image_url = `http://localhost:5000/uploads/${req.file.filename}`;
-        }
+        // Cloudinary gives a permanent URL in req.file.path
+        const image_url = req.file ? req.file.path : '';
 
         const result = await pool.query(
             'INSERT INTO products (name, description, price, old_price, image_url, stock) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
@@ -75,7 +70,7 @@ router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query('DELETE FROM products WHERE id = $1 RETURNING *', [id]);
-        
+
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Product not found' });
         }
