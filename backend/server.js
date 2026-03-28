@@ -5,6 +5,9 @@ const multer = require('multer');
 const fs = require('fs');
 require('dotenv').config();
 
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
 const requireAdmin = require('./middleware/requireAdmin');
 const authRoutes = require('./routes/auth');
 const ordersRoutes = require('./routes/orders');
@@ -12,40 +15,42 @@ const productsRoutes = require('./routes/products');
 const statsRoutes = require('./routes/stats');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Ensure uploads dir exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
-
-// Multer storage config
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadsDir),
-    filename: (req, file, cb) => {
-        const unique = Date.now() + '-' + Math.round(Math.random() * 1e6);
-        cb(null, unique + path.extname(file.originalname).toLowerCase());
-    }
+// Cloudinary config
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: 'bloxara',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    },
+});
+
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB max
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(uploadsDir));
 
-// Public routes (no auth needed for storefront reads)
+// Public routes
 app.use('/api/auth', authRoutes);
 app.use('/api/stats', statsRoutes);
 
 // Protected admin routes
-app.use('/api/orders', ordersRoutes);   // individual routes check auth as needed
-app.use('/api/products', productsRoutes); // same
+app.use('/api/orders', ordersRoutes);
+app.use('/api/products', productsRoutes);
 
 // Image upload endpoint (admin only)
 app.post('/api/upload', requireAdmin, upload.single('image'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    const url = `https://bloxara-store.onrender.com/uploads/${req.file.filename}`;
-    res.json({ url });
+    res.json({ url: req.file.path }); // Cloudinary permanent URL
 });
 
 // Users listing (admin only)
@@ -67,4 +72,3 @@ app.listen(PORT, () => {
     const pool = require('./db');
     pool.query('SELECT 1').then(() => console.log('✅ Admin DB Connected')).catch(console.error);
 });
-
