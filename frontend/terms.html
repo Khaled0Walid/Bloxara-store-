@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bloxara Terms of Service - Read our terms and conditions for using the Bloxara Roblox marketplace.">
+  <title>Terms of Service | Bloxara</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --accent-cyan: #00f0ff;
+      --accent-magenta: #d946ef;
+      --accent-purple: #a855f7;
+      --bg-dark: #0b0c10;
+      --bg-card: rgba(20, 20, 30, 0.85);
+      --text-light: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.07);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── PAGE HERO ── */
+    .tos-hero {
+      position: relative;
+      padding: 7rem 1.5rem 4rem;
+      text-align: center;
+      overflow: hidden;
+    }
+    .tos-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(168, 85, 247, 0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 20% 50%, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .tos-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .tos-hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+    .tos-hero p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .tos-updated {
+      margin-top: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      padding: 0.4rem 1.1rem;
+      border-radius: 8px;
+    }
+    .tos-updated span { color: var(--accent-cyan); font-weight: 600; }
+
+    /* ── LAYOUT ── */
+    .tos-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .tos-layout { grid-template-columns: 1fr; }
+      .tos-sidebar { display: none; }
+    }
+
+    /* ── SIDEBAR TOC ── */
+    .tos-sidebar {
+      position: sticky;
+      top: 5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+    }
+    .tos-sidebar h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-cyan);
+      margin-bottom: 1.2rem;
+    }
+    .toc-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      margin-bottom: 0.2rem;
+    }
+    .toc-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .toc-link .toc-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-purple);
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ── CONTENT ── */
+    .tos-content { display: flex; flex-direction: column; gap: 2rem; }
+
+    .tos-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 2.2rem;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s;
+      scroll-margin-top: 5rem;
+    }
+    .tos-section:hover { border-color: rgba(168, 85, 247, 0.25); }
+
+    .section-header-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+    .section-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.15rem;
+    }
+    .tos-section h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .tos-section p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .tos-section p:last-child { margin-bottom: 0; }
+
+    .tos-section ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .tos-section ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .tos-section ul li::before {
+      content: '▹';
+      color: var(--accent-cyan);
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* highlight box */
+    .tos-highlight {
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+    }
+    .tos-highlight p { color: #a5f3fc; margin-bottom: 0 !important; }
+
+    .tos-warning {
+      background: rgba(217, 70, 239, 0.07);
+      border: 1px solid rgba(217, 70, 239, 0.25);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+    }
+    .tos-warning p { color: #e879f9; margin-bottom: 0 !important; }
+
+    /* contact card */
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      border-radius: 12px;
+      padding: 1rem 1.3rem;
+      margin-top: 1.2rem;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .contact-card:hover { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.5); }
+    .contact-card-icon { font-size: 1.6rem; }
+    .contact-card-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .contact-card-value { color: #fff; font-weight: 600; font-size: 0.95rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: rgba(10, 10, 15, 0.98);
+      border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem 1.5rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+    }
+    .footer-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+    .footer-tagline {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 0.25rem;
+    }
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1.5rem;
+    }
+    .footer-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--accent-cyan); }
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+    }
+    .footer-copy {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .footer-copy strong { color: var(--accent-cyan); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">
+        <picture>
+          <img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara">
+        </picture>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#marketplace">Marketplace</a></li>
+        <li><a href="index.html#categories">Categories</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <a href="login.html" class="btn btn-secondary">Login</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="tos-hero">
+    <div class="tos-hero-badge">📋 Legal Document</div>
+    <h1>Terms of Service</h1>
+    <p>Please read these terms carefully before using Bloxara. By accessing our store, you agree to be bound by these conditions.</p>
+    <div class="tos-updated">Last updated: <span>March 29, 2026</span></div>
+  </section>
+
+  <!-- Main Layout -->
+  <div class="tos-layout">
+
+    <!-- Sidebar TOC -->
+    <aside class="tos-sidebar">
+      <h3>Table of Contents</h3>
+      <a href="#introduction" class="toc-link"><span class="toc-num">01</span> Introduction</a>
+      <a href="#eligibility" class="toc-link"><span class="toc-num">02</span> Eligibility</a>
+      <a href="#products-delivery" class="toc-link"><span class="toc-num">03</span> Products & Delivery</a>
+      <a href="#payments-refunds" class="toc-link"><span class="toc-num">04</span> Payments & Refunds</a>
+      <a href="#prohibited" class="toc-link"><span class="toc-num">05</span> Prohibited Activities</a>
+      <a href="#liability" class="toc-link"><span class="toc-num">06</span> Limitation of Liability</a>
+      <a href="#changes" class="toc-link"><span class="toc-num">07</span> Changes to Terms</a>
+      <a href="#contact" class="toc-link"><span class="toc-num">08</span> Contact Information</a>
+    </aside>
+
+    <!-- Content -->
+    <main class="tos-content">
+
+      <!-- 01 Introduction -->
+      <section id="introduction" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">📜</div>
+          <div>
+            <div class="section-num">Section 01</div>
+            <h2>Introduction</h2>
+          </div>
+        </div>
+        <p>Welcome to <strong style="color:#fff;">Bloxara</strong> — a marketplace for discounted Roblox virtual items. These Terms of Service ("Terms") govern your access to and use of Bloxara's website, services, and any purchases made through our store.</p>
+        <p>By accessing or using Bloxara, you confirm that you have read, understood, and agreed to these Terms. If you do not agree with any part of these Terms, you must discontinue use of the platform immediately.</p>
+        <div class="tos-highlight">
+          <p>⚡ Bloxara operates as an independent reseller of Roblox virtual items. We are <strong>not affiliated with, endorsed by, or officially partnered</strong> with Roblox Corporation in any way.</p>
+        </div>
+      </section>
+
+      <!-- 02 Eligibility -->
+      <section id="eligibility" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">👤</div>
+          <div>
+            <div class="section-num">Section 02</div>
+            <h2>Eligibility</h2>
+          </div>
+        </div>
+        <p>To use Bloxara and make purchases, you must meet the following eligibility requirements:</p>
+        <ul>
+          <li>You must be at least <strong style="color:#fff;">13 years of age</strong> or older to create an account.</li>
+          <li>Users under the age of 18 must have explicit <strong style="color:#fff;">parental or guardian consent</strong> before making any purchases.</li>
+          <li>You must have a valid and active <strong style="color:#fff;">Roblox account</strong> in good standing to receive item deliveries.</li>
+          <li>You must have a <strong style="color:#fff;">Discord account</strong> to receive item delivery via our Discord server.</li>
+          <li>You are legally permitted to enter into binding agreements under the laws of your country or region.</li>
+        </ul>
+        <p>Bloxara reserves the right to terminate accounts that violate these eligibility requirements without prior notice.</p>
+      </section>
+
+      <!-- 03 Products & Delivery -->
+      <section id="products-delivery" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">🎮</div>
+          <div>
+            <div class="section-num">Section 03</div>
+            <h2>Products & Delivery</h2>
+          </div>
+        </div>
+        <p>Bloxara sells Roblox virtual items at discounted prices. All products listed on our store are digital goods delivered within the Roblox platform via a trade or gift process coordinated through our Discord server.</p>
+
+        <p><strong style="color:#fff;">Delivery Process:</strong></p>
+        <ul>
+          <li>After completing your purchase, you will receive a <strong style="color:#fff;">unique order reference code</strong>.</li>
+          <li>You must create a <strong style="color:#fff;">support ticket</strong> in our official Discord server and provide your order reference, Roblox username, and Discord handle.</li>
+          <li>Our team will process your delivery within <strong style="color:#fff;">24–72 hours</strong> of ticket creation during business days.</li>
+          <li>Items are delivered directly to your Roblox account via in-game trade.</li>
+        </ul>
+
+        <div class="tos-highlight">
+          <p>📦 Delivery times may vary during high-demand periods or for rare/limited items. We will always notify you of any delays through Discord.</p>
+        </div>
+
+        <p>Bloxara does not guarantee item availability at all times. In the rare event that a listed item becomes unavailable after purchase, you will receive a <strong style="color:#fff;">full refund or a comparable item of equal or greater value</strong>, at your choice.</p>
+      </section>
+
+      <!-- 04 Payments & Refunds -->
+      <section id="payments-refunds" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">💳</div>
+          <div>
+            <div class="section-num">Section 04</div>
+            <h2>Payments & Refunds</h2>
+          </div>
+        </div>
+        <p>All payments on Bloxara are processed securely. By completing a purchase, you acknowledge and agree to the following payment and refund policies:</p>
+
+        <p><strong style="color:#fff;">Payments:</strong></p>
+        <ul>
+          <li>All prices are listed in <strong style="color:#fff;">US Dollars (USD)</strong> unless otherwise stated.</li>
+          <li>Payments are processed at the time of order placement.</li>
+          <li>Bloxara uses trusted third-party payment processors; we do not store your payment card details.</li>
+        </ul>
+
+        <p><strong style="color:#fff;">Refunds:</strong></p>
+        <ul>
+          <li>Refunds are available if the item has <strong style="color:#fff;">not yet been delivered</strong> to your Roblox account.</li>
+          <li>Once a trade or delivery is confirmed as completed, <strong style="color:#fff;">no refund will be issued</strong>.</li>
+          <li>Refund requests must be submitted via a Discord support ticket within <strong style="color:#fff;">48 hours</strong> of your order date.</li>
+          <li>Refunds due to item unavailability are processed within <strong style="color:#fff;">5–7 business days</strong>.</li>
+        </ul>
+
+        <div class="tos-warning">
+          <p>⚠️ Chargebacks filed without contacting our support first may result in a permanent account ban and will be contested. Please reach out to us first — we always aim to resolve issues fairly.</p>
+        </div>
+      </section>
+
+      <!-- 05 Prohibited Activities -->
+      <section id="prohibited" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">🚫</div>
+          <div>
+            <div class="section-num">Section 05</div>
+            <h2>Prohibited Activities</h2>
+          </div>
+        </div>
+        <p>To maintain the safety and integrity of the Bloxara community, the following activities are strictly prohibited:</p>
+        <ul>
+          <li>Attempting to <strong style="color:#fff;">defraud, scam, or deceive</strong> other users or Bloxara staff in any way.</li>
+          <li>Using <strong style="color:#fff;">stolen payment methods</strong> or engaging in fraudulent transactions.</li>
+          <li>Creating <strong style="color:#fff;">multiple accounts</strong> to abuse promotions, discounts, or referral programs.</li>
+          <li>Attempting to <strong style="color:#fff;">reverse-engineer, hack, or exploit</strong> any part of the Bloxara website or backend systems.</li>
+          <li>Impersonating <strong style="color:#fff;">Bloxara staff</strong> or other users on Discord or any platform.</li>
+          <li>Using the platform to facilitate any activity that <strong style="color:#fff;">violates Roblox's Terms of Service</strong>.</li>
+          <li>Posting <strong style="color:#fff;">spam, malicious links, or inappropriate content</strong> in our Discord server or any communication channels.</li>
+        </ul>
+        <p>Violation of any of the above may result in immediate and permanent account suspension, forfeiture of pending orders, and legal action if applicable.</p>
+      </section>
+
+      <!-- 06 Limitation of Liability -->
+      <section id="liability" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">⚖️</div>
+          <div>
+            <div class="section-num">Section 06</div>
+            <h2>Limitation of Liability</h2>
+          </div>
+        </div>
+        <p>To the fullest extent permitted by applicable law, Bloxara and its staff, owners, and affiliates shall not be liable for:</p>
+        <ul>
+          <li>Any <strong style="color:#fff;">indirect, incidental, or consequential damages</strong> arising from the use or inability to use our services.</li>
+          <li>Losses resulting from <strong style="color:#fff;">Roblox account bans, suspensions, or policy changes</strong> by Roblox Corporation that affect item delivery.</li>
+          <li>Damages caused by <strong style="color:#fff;">third-party service disruptions</strong>, including payment processors or Discord outages.</li>
+          <li>Any <strong style="color:#fff;">unauthorized access</strong> to your account resulting from your own failure to protect login credentials.</li>
+        </ul>
+        <div class="tos-highlight">
+          <p>💡 Bloxara's total liability in connection with any claim related to a purchase shall not exceed the <strong>amount you paid for that specific transaction</strong>.</p>
+        </div>
+        <p>This platform is provided "as is" and "as available" without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or uninterrupted availability.</p>
+      </section>
+
+      <!-- 07 Changes to Terms -->
+      <section id="changes" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">🔄</div>
+          <div>
+            <div class="section-num">Section 07</div>
+            <h2>Changes to Terms</h2>
+          </div>
+        </div>
+        <p>Bloxara reserves the right to update, modify, or replace any part of these Terms of Service at any time. Any changes will be effective immediately upon being posted to this page.</p>
+        <ul>
+          <li>We will update the <strong style="color:#fff;">"Last Updated"</strong> date at the top of this page upon making any revisions.</li>
+          <li>Significant changes may be announced through our <strong style="color:#fff;">Discord server</strong> or via email where possible.</li>
+          <li>Your continued use of Bloxara after changes are posted constitutes your <strong style="color:#fff;">acceptance of the revised Terms</strong>.</li>
+        </ul>
+        <p>We encourage you to review this page periodically to stay informed about the Terms governing your use of Bloxara.</p>
+      </section>
+
+      <!-- 08 Contact -->
+      <section id="contact" class="tos-section">
+        <div class="section-header-row">
+          <div class="section-icon">📬</div>
+          <div>
+            <div class="section-num">Section 08</div>
+            <h2>Contact Information</h2>
+          </div>
+        </div>
+        <p>If you have any questions, concerns, or disputes regarding these Terms of Service, our team is here to help. The fastest way to reach us is through our Discord server where our support staff are active daily.</p>
+
+        <a href="https://discord.gg/bloxara" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-card-icon">💬</div>
+          <div>
+            <div class="contact-card-label">Primary Support</div>
+            <div class="contact-card-value">Discord Server — discord.gg/bloxara</div>
+          </div>
+        </a>
+
+        <a href="mailto:support@bloxara.io" class="contact-card" style="margin-top: 0.75rem;">
+          <div class="contact-card-icon">✉️</div>
+          <div>
+            <div class="contact-card-label">Email Support</div>
+            <div class="contact-card-value">support@bloxara.io</div>
+          </div>
+        </a>
+
+        <p style="margin-top: 1.2rem;">We aim to respond to all inquiries within <strong style="color:#fff;">24–48 hours</strong>. Please include your order reference number when reaching out about a specific purchase.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">✦ Bloxara</div>
+        <div class="footer-tagline">The premium destination for Roblox virtual items</div>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#marketplace">Marketplace</a>
+        <a href="index.html#categories">Categories</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="https://discord.gg/bloxara" target="_blank">Discord</a>
+      </nav>
+      <div class="footer-divider"></div>
+      <p class="footer-copy">© 2026 <strong>Bloxara</strong>. All rights reserved. Not affiliated with Roblox Corporation.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
