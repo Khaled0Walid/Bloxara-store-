@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = 'https://bloxara-store.onrender.com/api';
+
 
     // UI ELEMENTS
     const navItems = document.querySelectorAll('.nav-item:not(#adminLogoutBtn)');
@@ -14,17 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'index.html';
         });
     }
-    
+
     // TAB LOGIC
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             navItems.forEach(nav => nav.classList.remove('active'));
             sections.forEach(sec => sec.classList.remove('active'));
-            
+
             item.classList.add('active');
             const target = item.getAttribute('data-tab');
             document.getElementById(target).classList.add('active');
-            
+
             if (target === 'dashboard') headerTitle.textContent = 'System Overview';
             if (target === 'orders') headerTitle.textContent = 'Orders Management';
             if (target === 'products') headerTitle.textContent = 'Products Inventory';
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // ORDERS
     // ==========================================
-    const pendingOrdersBody   = document.getElementById('pendingOrdersBody');
+    const pendingOrdersBody = document.getElementById('pendingOrdersBody');
     const fulfilledOrdersBody = document.getElementById('fulfilledOrdersBody');
     const searchInput = document.getElementById('searchInput');
     let allOrders = [];
@@ -60,12 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getBadgeClass(status) {
         switch (status) {
-            case 'Pending':        return 'badge yellow';
+            case 'Pending': return 'badge yellow';
             case 'Awaiting Trade': return 'badge blue';
-            case 'Trade Sent':     return 'badge purple';
+            case 'Trade Sent': return 'badge purple';
             case 'Fulfilled':
-            case 'Completed':      return 'badge green';
-            default:               return 'badge yellow';
+            case 'Completed': return 'badge green';
+            default: return 'badge yellow';
         }
     }
 
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allOrders = await res.json();
             renderOrders(allOrders);
         } catch (e) {
-            pendingOrdersBody.innerHTML   = `<tr><td colspan="9" style="color:#ff4d4d;text-align:center;">Error connecting to API.</td></tr>`;
+            pendingOrdersBody.innerHTML = `<tr><td colspan="9" style="color:#ff4d4d;text-align:center;">Error connecting to API.</td></tr>`;
             fulfilledOrdersBody.innerHTML = `<tr><td colspan="8" style="color:#ff4d4d;text-align:center;">Error connecting to API.</td></tr>`;
         }
     }
@@ -113,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderOrders(orders) {
-        const pending   = orders.filter(o => !FULFILLED_STATUSES.includes(o.status));
-        const fulfilled = orders.filter(o =>  FULFILLED_STATUSES.includes(o.status));
+        const pending = orders.filter(o => !FULFILLED_STATUSES.includes(o.status));
+        const fulfilled = orders.filter(o => FULFILLED_STATUSES.includes(o.status));
 
         // Update count badges
-        document.getElementById('pending-count').textContent   = pending.length;
+        document.getElementById('pending-count').textContent = pending.length;
         document.getElementById('fulfilled-count').textContent = fulfilled.length;
 
         // Render Pending
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         btn.textContent = '✓ Fulfil Order';
                         btn.disabled = false;
                     }
-                } catch(e) {
+                } catch (e) {
                     alert('Failed to update order');
                     btn.textContent = '✓ Fulfil Order';
                     btn.disabled = false;
@@ -182,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Filter pending table by ref code only
-    window.filterPendingByRef = function(term) {
+    window.filterPendingByRef = function (term) {
         const t = term.trim().toLowerCase();
         const pending = allOrders.filter(o => !FULFILLED_STATUSES.includes(o.status));
         const filtered = t
@@ -212,14 +213,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                         if (res.ok) { loadOrders(); document.getElementById('pendingRefSearch').value = ''; }
                         else { btn.textContent = '✓ Fulfil Order'; btn.disabled = false; }
-                    } catch(e) { btn.textContent = '✓ Fulfil Order'; btn.disabled = false; }
+                    } catch (e) { btn.textContent = '✓ Fulfil Order'; btn.disabled = false; }
                 });
             });
         }
     };
 
     // Filter fulfilled table by ref code
-    window.filterFulfilledByRef = function(term) {
+    window.filterFulfilledByRef = function (term) {
         const t = term.trim().toLowerCase();
         const fulfilled = allOrders.filter(o => FULFILLED_STATUSES.includes(o.status));
         const filtered = t
@@ -250,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleAddProductBtn.addEventListener('click', () => {
         addProductFormPanel.style.display = 'block';
     });
-    
+
     cancelAddProductBtn.addEventListener('click', () => {
         addProductFormPanel.style.display = 'none';
         addProductForm.reset();
@@ -300,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addProductForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const fileInput = document.getElementById('prodImage');
         if (fileInput.files.length === 0) {
             alert("Please select an image file.");
@@ -377,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 usersTableBody.appendChild(tr);
             });
-        } catch(e) {
+        } catch (e) {
             usersTableBody.innerHTML = '<tr><td colspan="5" style="color:#ff4d4d;text-align:center;">Error loading users.</td></tr>';
         }
     }
