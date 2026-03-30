@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         const query = `
             SELECT 
                 id, item_id, item_name, item_image, order_ref, customer_email,
-                roblox_username, discord_handle, status, created_at, price, quantity
+                roblox_username, discord_handle, status, created_at, price, quantity, paypal_order_id
             FROM orders
             ORDER BY created_at DESC;
         `;
@@ -38,7 +38,7 @@ router.get('/user/:userId', async (req, res) => {
 
 // POST /api/orders — create a new order
 router.post('/', async (req, res) => {
-    const { user_id, item_id, item_name, item_image, order_ref, customer_email, discord_handle, price, quantity } = req.body;
+    const { user_id, item_id, item_name, item_image, order_ref, customer_email, discord_handle, price, quantity, paypal_order_id } = req.body;
     const qty = parseInt(quantity) || 1;
     const client = await pool.connect();
     try {
@@ -62,12 +62,12 @@ router.post('/', async (req, res) => {
             }
         }
 
-        // 3. Insert order
+        // 3. Insert order (with paypal_order_id)
         const result = await client.query(
-            `INSERT INTO orders (user_id, item_id, item_name, item_image, order_ref, customer_email, discord_handle, price, quantity, status)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'Pending') RETURNING *`,
+            `INSERT INTO orders (user_id, item_id, item_name, item_image, order_ref, customer_email, discord_handle, price, quantity, status, paypal_order_id)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'Pending', $10) RETURNING *`,
             [user_id || null, item_id || null, item_name || 'Unknown Item', item_image || null,
-             order_ref, customer_email || null, discord_handle, price || 0, qty]
+                order_ref, customer_email || null, discord_handle, price || 0, qty, paypal_order_id || null]
         );
         await client.query('COMMIT');
         const order = result.rows[0];
@@ -80,12 +80,13 @@ router.post('/', async (req, res) => {
                     title: '🛒 New Order Received!',
                     color: 0x45f3ff,
                     fields: [
-                        { name: 'Order Ref',   value: `\`${order.order_ref}\``,             inline: true },
-                        { name: 'Item',        value: order.item_name || '—',               inline: true },
-                        { name: 'Price',       value: `$${Number(order.price).toFixed(2)}`, inline: true },
-                        { name: 'Discord',     value: order.discord_handle || '—',          inline: true },
-                        { name: 'Qty',         value: String(order.quantity),               inline: true },
-                        { name: 'Buyer Email', value: order.customer_email || 'Guest',      inline: true },
+                        { name: 'Order Ref', value: `\`${order.order_ref}\``, inline: true },
+                        { name: 'Item', value: order.item_name || '—', inline: true },
+                        { name: 'Price', value: `$${Number(order.price).toFixed(2)}`, inline: true },
+                        { name: 'Discord', value: order.discord_handle || '—', inline: true },
+                        { name: 'Qty', value: String(order.quantity), inline: true },
+                        { name: 'Buyer Email', value: order.customer_email || 'Guest', inline: true },
+                        { name: 'PayPal ID', value: paypal_order_id || '—', inline: true },
                     ],
                     timestamp: new Date().toISOString(),
                     footer: { text: 'Bloxara Admin' }
@@ -100,14 +101,13 @@ router.post('/', async (req, res) => {
 
         res.status(201).json(order);
     } catch (err) {
-        await client.query('ROLLBACK').catch(() => {});
+        await client.query('ROLLBACK').catch(() => { });
         console.error('Error creating order:', err);
         res.status(500).json({ error: 'Failed to create order' });
     } finally {
         client.release();
     }
 });
-
 
 // PATCH /api/orders/:id/status — update order status
 router.patch('/:id/status', async (req, res) => {
