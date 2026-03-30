@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css">
+  <script src="https://www.paypal.com/sdk/js?client-id=AXuK1UU8z1Ld277TlsCqtw3yIyC39nEbfjEQ4J4MZOoijLXh6akCgyy2VAAztCzS7T4mmYBEksefNBw0&currency=USD"></script>
   <style>
     .checkout-layout {
       display: grid;
@@ -17,7 +18,7 @@
       gap: 3rem;
       margin-top: 2rem;
     }
-
+ 
     .order-summary-card {
       background: rgba(11, 12, 16, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -34,20 +35,20 @@
         padding-bottom: 2rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-
+ 
     .summary-img {
         width: 100px;
         height: 100px;
         border-radius: 12px;
         object-fit: cover;
     }
-
+ 
     .summary-details h4 {
         margin: 0 0 0.5rem 0;
         font-family: var(--font-heading);
         font-size: 1.25rem;
     }
-
+ 
     .summary-row {
         display: flex;
         justify-content: space-between;
@@ -55,7 +56,7 @@
         color: var(--text-secondary);
         font-weight: 500;
     }
-
+ 
     .summary-total {
         display: flex;
         justify-content: space-between;
@@ -66,7 +67,7 @@
         font-weight: 700;
         color: #fff;
     }
-
+ 
     .payment-form-card {
       background: rgba(11, 12, 16, 0.7);
       border: 1px solid rgba(69, 243, 255, 0.2);
@@ -74,35 +75,38 @@
       padding: 2.5rem;
       box-shadow: 0 0 40px rgba(69, 243, 255, 0.05);
     }
-
-    .payment-methods {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+ 
+    .paypal-box {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(0, 112, 186, 0.08);
+        border: 1px solid rgba(0, 112, 186, 0.3);
+        border-radius: 12px;
         margin-bottom: 2rem;
     }
-
-    .payment-option {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        padding: 1rem;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
+ 
+    .paypal-box img {
+        height: 45px;
+        margin-bottom: 1rem;
     }
-
-    .payment-option:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.3);
+ 
+    .paypal-box p {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin: 0 0 0.5rem 0;
     }
-
-    .payment-option.active {
-        background: rgba(69, 243, 255, 0.1);
-        border-color: var(--accent-cyan);
-        box-shadow: 0 0 15px rgba(69, 243, 255, 0.2);
+ 
+    .paypal-box small {
+        color: #64748b;
+        font-size: 0.8rem;
     }
-
+ 
+    #paypal-button-container {
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+ 
     @media (max-width: 900px) {
         .checkout-layout {
             grid-template-columns: 1fr;
@@ -111,12 +115,13 @@
   </style>
 </head>
 <body style="padding-top: 80px;">
-  <!-- Navbar (Reused from index.html) -->
+ 
+  <!-- Navbar -->
   <nav class="navbar scrolled">
     <div class="container nav-container">
       <div class="logo">
         <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; color: inherit;">
-          <picture><img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara" style="height: 50px; width: auto;"></picture>
+          <picture><img src="logo/logo.png" style="height: 50px; width: auto;" alt="Bloxara"></picture>
         </a>
       </div>
       <ul class="nav-links">
@@ -124,12 +129,12 @@
       </ul>
     </div>
   </nav>
-
+ 
   <section class="section">
     <div class="container">
       <h1 class="section-title" style="margin-bottom: 0.5rem; text-align: left;">Secure Checkout</h1>
       <p style="color: var(--text-secondary); margin-bottom: 2rem;">Complete your order below via Bloxara SafePay.</p>
-
+ 
       <div class="checkout-layout">
         
         <!-- Left Column: Order Summary -->
@@ -143,10 +148,10 @@
                     <span style="color: var(--accent-cyan); font-size: 0.9rem;" id="checkout-badge">Finding Price</span>
                 </div>
             </div>
-
+ 
             <div class="summary-row">
                 <span>Price per item</span>
-                <span><span class="robux-icon">$</span> <span id="checkout-base-price">0.00</span></span>
+                <span>$ <span id="checkout-base-price">0.00</span></span>
             </div>
             <div class="summary-row">
                 <span>Quantity</span>
@@ -156,179 +161,147 @@
                 <span>SafePay Fee</span>
                 <span style="color: #4ade80;">Free</span>
             </div>
-
+ 
             <div class="summary-total">
                 <span>Total</span>
-                <span><span class="robux-icon product-robux">$</span> <span id="checkout-total">0.00</span></span>
+                <span>$ <span id="checkout-total">0.00</span></span>
             </div>
         </div>
-
-        <!-- Right Column: Payment & Billing Form -->
+ 
+        <!-- Right Column: Payment Form -->
         <div class="payment-form-card animate-on-scroll" style="transition-delay: 0.2s">
+ 
+            <!-- Delivery Details -->
             <h3 style="margin-bottom: 1.5rem; font-family: var(--font-heading);">Delivery Details</h3>
-            
             <div class="form-group" style="margin-bottom: 2rem;">
-                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-weight: 500;">Discord Username <span style="color: #ef4444;">*</span></label>
-                <input type="text" id="discord-handle" placeholder="e.g. gamer123#0000" style="width: 100%; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" required onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.75rem;">Our delivery team will contact you here to drop the item in-game.</p>
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary); font-weight: 500;">
+                    Discord Username <span style="color: #ef4444;">*</span>
+                </label>
+                <input type="text" id="discord-handle" placeholder="e.g. gamer123#0000"
+                    style="width: 100%; padding: 0.8rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;"
+                    required
+                    onfocus="this.style.borderColor='var(--accent-cyan)'"
+                    onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.75rem;">
+                    Our delivery team will contact you here to drop the item in-game.
+                </p>
             </div>
+ 
+            <!-- PayPal Payment -->
+            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-heading);">Payment Method</h3>
+ 
+            <div class="paypal-box">
+                <img src="icons/paypal@2x.png" alt="PayPal">
+                <p>You will be redirected to PayPal to complete your payment securely.</p>
+                <small>No PayPal account needed — you can pay with a card via PayPal too.</small>
+            </div>
+ 
+            <!-- PayPal SDK Button -->
+            <div id="paypal-button-container"></div>
 
-            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-heading);">Billing Address</h3>
-            <div class="form-group" style="margin-bottom: 1rem;">
-                <input type="text" placeholder="Full Name" style="width: 100%; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" required onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-            </div>
-            <div class="form-group" style="margin-bottom: 1rem;">
-                <input type="text" placeholder="Street Address" style="width: 100%; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" required onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-            </div>
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                <input type="text" placeholder="City" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" required onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-                <input type="text" placeholder="Zip / Postal" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" required onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-            </div>
-
-            <!-- Payment Method Tabs -->
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                <h3 style="margin: 0; font-family: var(--font-heading);">Payment Method</h3>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <div style="background: #fff; padding: 2px 6px; border-radius: 4px; height: 26px; display: flex; align-items: center;">
-                        <img src="icons/visa.svg" alt="Visa" style="height: 18px; width: auto;">
-                    </div>
-                    <div style="background: #fff; padding: 2px 6px; border-radius: 4px; height: 26px; display: flex; align-items: center;">
-                        <img src="icons/download (1).png" alt="Mastercard" style="height: 18px; width: auto;">
-                    </div>
-                    <div style="background: #fff; padding: 2px 6px; border-radius: 4px; height: 26px; display: flex; align-items: center;">
-                        <img src="icons/paypal@2x.png" alt="PayPal" style="height: 18px; width: auto;">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab buttons -->
-            <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
-                <button id="tab-card" onclick="switchTab('card')" style="flex: 1; padding: 0.75rem; background: rgba(69, 243, 255, 0.15); border: 1.5px solid var(--accent-cyan); border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                    💳 Credit / Debit Card
-                </button>
-                <button id="tab-paypal" onclick="switchTab('paypal')" style="flex: 1; padding: 0.75rem; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                    <img src="icons/paypal@2x.png" alt="PayPal" style="height: 16px; vertical-align: middle; margin-right: 4px;">PayPal
-                </button>
-            </div>
-
-            <!-- Card Form Panel -->
-            <div id="card-panel">
-                <div class="form-group">
-                    <input type="text" placeholder="Name on Card" style="width: 100%; margin-bottom: 1rem; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-                    <input type="text" placeholder="Card Number (0000 0000 0000 0000)" style="width: 100%; margin-bottom: 1rem; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-                    <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                        <input type="text" placeholder="MM/YY" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-                        <input type="text" placeholder="CVC" style="flex: 1; padding: 0.8rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-cyan)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'">
-                    </div>
-                </div>
-            </div>
-
-            <!-- PayPal Panel -->
-            <div id="paypal-panel" style="display: none; text-align: center; padding: 2rem; background: rgba(0, 112, 186, 0.08); border: 1px solid rgba(0, 112, 186, 0.3); border-radius: 12px; margin-bottom: 2rem;">
-                <img src="icons/paypal@2x.png" alt="PayPal" style="height: 40px; margin-bottom: 1rem;">
-                <p style="color: #94a3b8; font-size: 0.9rem; margin: 0 0 0.5rem 0;">You will be redirected to PayPal to complete your payment securely.</p>
-                <p style="color: #64748b; font-size: 0.8rem; margin: 0;">No account needed — you can pay with a card via PayPal too.</p>
-            </div>
-
-            <button class="btn btn-primary btn-large" style="width: 100%; cursor: pointer; margin-bottom: 1rem;" onclick="simulatePayment(event)">
-                Pay Now (Simulated)
-            </button>
-            <p style="text-align: center; font-size: 0.8rem; color: #a0a0b0; margin-top: 0;">
-                🔒 Secured by 256-bit AES encryption
+            <p style="text-align: center; font-size: 0.8rem; color: #a0a0b0; margin-top: 0.75rem;">
+                🔒 Secured by PayPal's 256-bit encryption
             </p>
 
             <script>
-                function switchTab(method) {
-                    const cardPanel = document.getElementById('card-panel');
-                    const paypalPanel = document.getElementById('paypal-panel');
-                    const tabCard = document.getElementById('tab-card');
-                    const tabPaypal = document.getElementById('tab-paypal');
-                    if (method === 'card') {
-                        cardPanel.style.display = 'block';
-                        paypalPanel.style.display = 'none';
-                        tabCard.style.background = 'rgba(69, 243, 255, 0.15)';
-                        tabCard.style.borderColor = 'var(--accent-cyan)';
-                        tabPaypal.style.background = 'rgba(255,255,255,0.04)';
-                        tabPaypal.style.borderColor = 'rgba(255,255,255,0.1)';
-                    } else {
-                        cardPanel.style.display = 'none';
-                        paypalPanel.style.display = 'block';
-                        tabPaypal.style.background = 'rgba(0, 112, 186, 0.2)';
-                        tabPaypal.style.borderColor = '#0070ba';
-                        tabCard.style.background = 'rgba(255,255,255,0.04)';
-                        tabCard.style.borderColor = 'rgba(255,255,255,0.1)';
-                    }
-                }
+                const API_URL = 'https://bloxara-store.onrender.com';
 
-                async function simulatePayment(e) {
-                    e.preventDefault();
-                    const discordHandle = document.getElementById('discord-handle').value.trim();
-                    if (!discordHandle) {
-                        alert("Please enter your Discord Username so we can contact you.");
-                        return;
-                    }
-                    
-                    // Generate unique order ID
-                    const ts = Date.now().toString(36).toUpperCase();
-                    const rand = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
-                    const orderNum = `BLX-${ts}-${rand}`;
-                    
-                    // Collect order data from page
-                    const itemTitle = document.getElementById('checkout-title')?.innerText || 'Unknown Item';
-                    const itemImg = document.getElementById('checkout-img')?.src || null;
-                    const totalPrice = parseFloat(document.getElementById('checkout-total')?.innerText) || 0;
-                    const qty = parseInt(document.getElementById('checkout-qty')?.innerText) || 1;
-                    const params = new URLSearchParams(window.location.search);
-                    const itemId = params.get('id');
+                paypal.Buttons({
 
-                    // Get logged-in user if any
-                    let userData = null;
-                    try { userData = JSON.parse(localStorage.getItem('bloxara_user')); } catch(err) {}
-
-                    // Save order to backend
-                    try {
-                        const orderRes = await fetch('http://localhost:5000/api/orders', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                user_id: userData?.id || null,
-                                item_id: itemId,
-                                item_name: itemTitle,
-                                item_image: itemImg,
-                                order_ref: orderNum,
-                                customer_email: userData?.email || null,
-                                discord_handle: discordHandle,
-                                price: totalPrice,
-                                quantity: qty
-                            })
-                        });
-
-                        if (!orderRes.ok) {
-                            const errData = await orderRes.json().catch(() => ({}));
-                            if (errData.error === 'out_of_stock') {
-                                alert('❌ Sorry, this item is out of stock! Please contact us on Discord.');
-                                return;
-                            }
-                            // Other errors — still allow to proceed
-                            console.warn('Order save failed:', errData);
+                    // Called when PayPal popup opens — set the order amount dynamically
+                    createOrder: function(data, actions) {
+                        const discordHandle = document.getElementById('discord-handle').value.trim();
+                        if (!discordHandle) {
+                            alert("Please enter your Discord Username so we can deliver your item.");
+                            return Promise.reject(new Error('Missing Discord handle'));
                         }
-                    } catch (err) {
-                        console.warn('Could not save order to database:', err);
+
+                        const totalPrice = parseFloat(
+                            document.getElementById('checkout-total')?.innerText.replace(/,/g, '')
+                        ) || 0;
+
+                        return actions.order.create({
+                            purchase_units: [{
+                                description: document.getElementById('checkout-title')?.innerText || 'Bloxara Item',
+                                amount: {
+                                    value: totalPrice.toFixed(2)
+                                }
+                            }]
+                        });
+                    },
+
+                    // Called after buyer approves the payment on PayPal
+                    onApprove: async function(data, actions) {
+                        const details = await actions.order.capture();
+
+                        // Generate unique order ref
+                        const ts = Date.now().toString(36).toUpperCase();
+                        const rand = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+                        const orderNum = `BLX-${ts}-${rand}`;
+
+                        // Collect page data
+                        const discordHandle = document.getElementById('discord-handle').value.trim();
+                        const itemTitle = document.getElementById('checkout-title')?.innerText || 'Unknown Item';
+                        const itemImg = document.getElementById('checkout-img')?.src || null;
+                        const totalPrice = parseFloat(
+                            document.getElementById('checkout-total')?.innerText.replace(/,/g, '')
+                        ) || 0;
+                        const qty = parseInt(document.getElementById('checkout-qty')?.innerText) || 1;
+                        const params = new URLSearchParams(window.location.search);
+                        const itemId = params.get('id');
+
+                        // Get logged-in user
+                        let userData = null;
+                        try { userData = JSON.parse(localStorage.getItem('bloxara_user')); } catch(err) {}
+
+                        // Save confirmed order to backend
+                        try {
+                            const orderRes = await fetch(`${API_URL}/api/orders`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    user_id: userData?.id || null,
+                                    item_id: itemId,
+                                    item_name: itemTitle,
+                                    item_image: itemImg,
+                                    order_ref: orderNum,
+                                    customer_email: details.payer.email_address || userData?.email || null,
+                                    discord_handle: discordHandle,
+                                    price: totalPrice,
+                                    quantity: qty,
+                                    paypal_order_id: details.id
+                                })
+                            });
+
+                            if (!orderRes.ok) {
+                                const errData = await orderRes.json().catch(() => ({}));
+                                if (errData.error === 'out_of_stock') {
+                                    alert('❌ Sorry, this item is out of stock! Please contact us on Discord.');
+                                    return;
+                                }
+                            }
+                        } catch (err) {
+                            console.warn('Could not save order:', err);
+                        }
+
+                        // Save order ref and redirect to success page
+                        localStorage.setItem('last_order_ref', orderNum);
+                        window.location.href = `success.html?order=${orderNum}`;
+                    },
+
+                    onError: function(err) {
+                        console.error('PayPal error:', err);
+                        alert('Something went wrong with PayPal. Please try again.');
                     }
 
-                    window.location.href = `success.html?order=${orderNum}`;
-                }
+                }).render('#paypal-button-container');
             </script>
         </div>
-
+ 
       </div>
     </div>
   </section>
-
+ 
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
