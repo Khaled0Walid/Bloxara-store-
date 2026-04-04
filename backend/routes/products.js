@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const requireAdmin = require('../middleware/requireAdmin');
 
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
@@ -42,8 +43,8 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST /api/products (Create with Cloudinary Image Upload)
-router.post('/', upload.single('image'), async (req, res) => {
+// POST /api/products (Create with Cloudinary Image Upload) — Admin only
+router.post('/', requireAdmin, upload.single('image'), async (req, res) => {
     try {
         const { name, description, price, old_price, stock } = req.body;
 
@@ -65,8 +66,8 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 });
 
-// DELETE /api/products/:id
-router.delete('/:id', async (req, res) => {
+// DELETE /api/products/:id — Admin only
+router.delete('/:id', requireAdmin, async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query('DELETE FROM products WHERE id = $1 RETURNING *', [id]);

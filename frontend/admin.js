@@ -316,9 +316,11 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('stock', document.getElementById('prodStock').value);
         formData.append('image', fileInput.files[0]);
 
+        const token = localStorage.getItem('bloxara_token');
         try {
             const res = await fetch(`${API_URL}/products`, {
                 method: 'POST',
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {},
                 body: formData // Note: Content-Type is set automatically for FormData
             });
             if (res.ok) {
@@ -335,8 +337,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function deleteProduct(id) {
+        const token = localStorage.getItem('bloxara_token');
         try {
-            const res = await fetch(`${API_URL}/products/${id}`, { method: 'DELETE' });
+            const res = await fetch(`${API_URL}/products/${id}`, {
+                method: 'DELETE',
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+            });
             if (res.ok) {
                 loadProducts();
                 loadStats();
