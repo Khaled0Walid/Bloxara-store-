@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (token && userStr) {
       try {
         const user = JSON.parse(userStr);
-        // Replace Login/Signup with Profile Button
+        // Replace Login/Signup with Profile Button when logged in
         const redirectUrl = user.role === 'admin' ? 'admin.html' : 'profile.html';
         const profileBtnHTML = `
                   <a href="${redirectUrl}" class="btn btn-secondary profile-btn" style="padding: 0.4rem 1rem; border-radius: 20px; display: flex; align-items: center; gap: 0.4rem; justify-content: center;">
@@ -350,24 +350,19 @@ document.addEventListener('DOMContentLoaded', () => {
                   </a>
               `;
         if (navActions) navActions.innerHTML = profileBtnHTML;
+        // Also update mobile auth section when logged in
         if (mobileAuthBtns) mobileAuthBtns.innerHTML = profileBtnHTML;
       } catch (e) {
         console.error("Error parsing user data");
         localStorage.removeItem('bloxara_token');
         localStorage.removeItem('bloxara_user');
       }
-    } else if (!window.location.pathname.includes('login.html') && !window.location.pathname.includes('signup.html') && !window.location.pathname.includes('profile.html')) {
-      // Show default Login/Signup if not on auth pages or profile
-      const defaultAuthHTML = `
+    } else if (navActions && !window.location.pathname.includes('login.html') && !window.location.pathname.includes('signup.html') && !window.location.pathname.includes('profile.html')) {
+      // Only restore desktop nav-actions — mobile buttons are already in HTML
+      navActions.innerHTML = `
               <a href="login.html" class="btn btn-secondary">Login</a>
               <a href="signup.html" class="btn btn-primary">Sign Up</a>
           `;
-      const mobileDefaultAuthHTML = `
-          <a href="login.html" class="btn btn-secondary" style="width:100%; text-align:center;">Login</a>
-          <a href="signup.html" class="btn btn-primary" style="width:100%; text-align:center; margin-top: 0.5rem;">Sign Up</a>
-      `;
-      if (navActions) navActions.innerHTML = defaultAuthHTML;
-      if (mobileAuthBtns) mobileAuthBtns.innerHTML = mobileDefaultAuthHTML;
     }
   }
 
